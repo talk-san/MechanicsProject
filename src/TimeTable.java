@@ -9,6 +9,7 @@ public class TimeTable extends JFrame implements ActionListener {
     private JButton[] tool;
     private JTextField[] field;
     private CourseArray courses;
+    private Autoassociator autoassociator;
     private final Color[] CRScolor = {Color.RED, Color.GREEN, Color.BLACK};
 
     public TimeTable() {
@@ -82,14 +83,15 @@ public class TimeTable extends JFrame implements ActionListener {
 
 
         switch (getButtonIndex((JButton) click.getSource())) {
-            case 0:
+            case 0: // LOAD
                 int slots = Integer.parseInt(numOfSlots);
                 courses = new CourseArray(Integer.parseInt(numOfCourses) + 1, slots);
-                
                 courses.readClashes(clashFileName);
+                this.autoassociator = new Autoassociator(courses); // Initialize
+                trainAutoassociator(); // Training when loading
                 draw();
                 break;
-            case 1:
+            case 1: // START
                 // Added a check here to make sure Shift is not empty
                 if (!numOfShifts.isEmpty()) {
                     for (int i = 1; i < courses.length(); i++) courses.setSlot(i, 0);
@@ -98,19 +100,18 @@ public class TimeTable extends JFrame implements ActionListener {
                     System.out.println("Shift field is empty. Please enter a value.");
                 }
                 break;
-
-            case 2:
+            case 2: // STEP
                 courses.iterate(Integer.parseInt(numOfShifts));
                 draw();
                 break;
-            case 3:
+            case 3: // PRINT
                 System.out.println("Exam\tSlot\tClashes");
                 for (int i = 1; i < courses.length(); i++)
                     System.out.println(i + "\t" + courses.slot(i) + "\t" + courses.status(i));
                 break;
             case 4:
                 System.exit(0);
-            case 5: // Continue button
+            case 5: // CONTINUE
                 // Same as start with current step count.
                 if (!numOfShifts.isEmpty()) {
                     iterate(min, step, numOfIters, numOfShifts);
@@ -126,6 +127,7 @@ public class TimeTable extends JFrame implements ActionListener {
         int clashes;
         for (int iteration = 1; iteration <= Integer.parseInt(numOfIters); iteration++) {
             courses.iterate(Integer.parseInt(numOfShifts));
+            applyAutoassociatorUpdates();
             draw();
             clashes = courses.clashesLeft();
             if (clashes < min) {
@@ -135,6 +137,37 @@ public class TimeTable extends JFrame implements ActionListener {
         }
         System.out.println("Shift = " + numOfShifts + "\tMin clashes = " + min + "\tat step " + step);
         setVisible(true);
+    }
+    public void trainAutoassociator() {
+        String numOfSlots = field[0].getText();
+        for (int i = 0; i < Integer.parseInt(numOfSlots); i++) {
+            int[] timeslotData = courses.getTimeSlot(i);
+            if (isClashFree(timeslotData)) {
+                autoassociator.training(timeslotData);
+            }
+        }
+    }
+
+    private boolean isClashFree(int[] timeslotData) {
+        for (int i = 0; i < timeslotData.length; i++) {
+            if (timeslotData[i] == 1) {
+                if (courses.maxClashSize(i) > 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private void applyAutoassociatorUpdates() {
+        for (int i = 1; i < courses.length(); i++) {
+            int[] currentTimeslot = courses.getTimeSlot(courses.slot(i));
+            int suggestedIndex = autoassociator.unitUpdate(currentTimeslot);
+            if (suggestedIndex != courses.slot(i)) {
+                courses.setSlot(i, suggestedIndex);
+            }
+        }
+        draw();
     }
 
     public static void main(String[] args) {

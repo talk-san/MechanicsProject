@@ -1,0 +1,37 @@
+WITHOUT ASSOCIATOR
+
+For FILE: ute-s-92.stu
+Slots: 17
+Courses: 381
+Iters: 1
+
+When initially loading the set we see that the second half of the graph is entirely green
+indicating that there are no clashes with the second half of the courses,
+
+In the first half there are only a few green lines, meaning most of the courses here have clashes,
+using the Print button we can see which ones don't have clashes:
+    27	0	0
+    46	0	0
+    105	0	0
+    111	0	0
+    ...
+    133	0	0
+
+Now let's start the algorithm with Shift = 1, this means we're shifting each course to the right,
+after which more green lines appear in the first half, indicating some of the clashes were resolved,
+
+In comparison when starting the algorithm with 10 shifts, courses have more space to work with, this
+results in a noticeably change in the graph, with now most lines being green and using the print
+functionality we can find the lines which still haves clashes:
+    98	10	1 with one clash
+    123	10	1 with one clash
+
+WITH AUTOASSOCIATOR
+
+Running the same configuration with the autoassociator updates (default now) shows that with
+the autoassociator updates with shift = 1 and same config we see much less clashes since
+a lot of the courses have been moved to the second section without clashes
+for example the first clash free exam is now 15	14	0 and there are much less clashes now.
+
+With shift = 10 the start method doesn't change much from the version without the associator but
+the problem is solved after 1 shift with there being only 2 clashes after.
