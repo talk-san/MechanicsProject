@@ -2,7 +2,7 @@ public class Autoassociator {
 	private int weights[][];
 	private int trainingCapacity;
 	private int numCourses;
-	
+
 	public Autoassociator(CourseArray courses) {
 		numCourses = courses.length();
 		weights = new int[numCourses][numCourses];
@@ -13,13 +13,12 @@ public class Autoassociator {
 			}
 		}
 	}
-	
+
 	public int getTrainingCapacity() {
 		return trainingCapacity;
 	}
-	
+
 	public void training(int pattern[]) {
-		// TO DO
 		for (int i = 0; i < numCourses; i++) {
 			for (int j = 0; j < numCourses; j++) {
 				if (i != j) {
@@ -29,7 +28,7 @@ public class Autoassociator {
 		}
 		trainingCapacity++;
 	}
-	
+
 	public int unitUpdate(int neurons[]) {
 		int index = (int) (Math.random() * numCourses);
 		return updateNeuron(neurons, index);
