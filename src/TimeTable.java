@@ -10,6 +10,8 @@ public class TimeTable extends JFrame implements ActionListener {
     private JTextField[] field;
     private CourseArray courses;
     private Autoassociator autoassociator;
+    private int min;
+    private int step;
     private final Color[] CRScolor = {Color.RED, Color.GREEN, Color.BLACK};
 
     public TimeTable() {
@@ -22,6 +24,9 @@ public class TimeTable extends JFrame implements ActionListener {
 
         setTools();
         add(tools, BorderLayout.EAST);
+
+        min = Integer.MAX_VALUE;
+        step = 0;
 
         setVisible(true);
     }
@@ -73,14 +78,12 @@ public class TimeTable extends JFrame implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent click) {
-        int min = Integer.MAX_VALUE, step = 0;
-
         String numOfSlots = field[0].getText();
         String numOfCourses = field[1].getText();
         String clashFileName = field[2].getText();
         String numOfIters = field[3].getText();
         String numOfShifts = field[4].getText();
-
+        int clashes;
 
         switch (getButtonIndex((JButton) click.getSource())) {
             case 0: // LOAD
@@ -93,9 +96,22 @@ public class TimeTable extends JFrame implements ActionListener {
                 break;
             case 1: // START
                 // Added a check here to make sure Shift is not empty
+                min = Integer.MAX_VALUE;
+                step = 0;
                 if (!numOfShifts.isEmpty()) {
                     for (int i = 1; i < courses.length(); i++) courses.setSlot(i, 0);
-                    iterate(min, step, numOfIters, numOfShifts);
+                    for (int iteration = 1; iteration <= Integer.parseInt(numOfIters); iteration++) {
+                        courses.iterate(Integer.parseInt(numOfShifts));
+                        applyAutoassociatorUpdates();
+                        draw();
+                        clashes = courses.clashesLeft();
+                        if (clashes < min) {
+                            min = clashes;
+                            step = iteration;
+                        }
+                    }
+                    System.out.println("Shift = " + numOfShifts + "\tMin clashes = " + min + "\tat step " + step);
+                    setVisible(true);
                 } else {
                     System.out.println("Shift field is empty. Please enter a value.");
                 }
@@ -114,7 +130,18 @@ public class TimeTable extends JFrame implements ActionListener {
             case 5: // CONTINUE
                 // Same as start with current step count.
                 if (!numOfShifts.isEmpty()) {
-                    iterate(min, step, numOfIters, numOfShifts);
+                    for (int iteration = 1; iteration <= Integer.parseInt(numOfIters); iteration++) {
+                        courses.iterate(Integer.parseInt(numOfShifts));
+                        applyAutoassociatorUpdates();
+                        draw();
+                        clashes = courses.clashesLeft();
+                        if (clashes < min) {
+                            min = clashes;
+                            step = iteration;
+                        }
+                    }
+                    System.out.println("Shift = " + numOfShifts + "\tMin clashes = " + min + "\tat step " + step);
+                    setVisible(true);
                 } else {
                     System.out.println("Shift field is empty. Please enter a value.");
                 }
@@ -122,22 +149,6 @@ public class TimeTable extends JFrame implements ActionListener {
         }
     }
 
-    // Separate method since start and continue are similar (avoid duplication)
-    private void iterate(int min, int step, String numOfIters, String numOfShifts) {
-        int clashes;
-        for (int iteration = 1; iteration <= Integer.parseInt(numOfIters); iteration++) {
-            courses.iterate(Integer.parseInt(numOfShifts));
-            applyAutoassociatorUpdates();
-            draw();
-            clashes = courses.clashesLeft();
-            if (clashes < min) {
-                min = clashes;
-                step = iteration;
-            }
-        }
-        System.out.println("Shift = " + numOfShifts + "\tMin clashes = " + min + "\tat step " + step);
-        setVisible(true);
-    }
     public void trainAutoassociator() {
         String numOfSlots = field[0].getText();
         for (int i = 0; i < Integer.parseInt(numOfSlots); i++) {
