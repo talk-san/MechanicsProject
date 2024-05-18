@@ -106,13 +106,14 @@ public class TimeTable extends JFrame implements ActionListener {
                     for (int i = 1; i < courses.length(); i++) courses.setSlot(i, 0);
                     for (int iteration = 1; iteration <= Integer.parseInt(numOfIters); iteration++) {
                         courses.iterate(Integer.parseInt(numOfShifts));
-                        applyAutoassociatorUpdates();
                         draw();
                         clashes = courses.clashesLeft();
                         if (clashes < min) {
                             min = clashes;
                             step = iteration;
                         }
+                        int index = (int) (Math.random() * courses.getLength());
+                        autoassociator.chainUpdate(courses.getTimeSlot(index), Integer.parseInt(numOfIters));
                     }
                     System.out.println("Shift = " + numOfShifts + "\tMin clashes = " + min + "\tat step " + step);
                     setVisible(true);

@@ -86,6 +86,10 @@ public class CourseArray {
 	public int maxClashSize(int index) {
 		return elements[index] == null || elements[index].clashesWith.isEmpty() ? 0 : elements[index].clashesWith.size();
 	}
+
+	public int getLength() {
+		return elements.length;
+	}
 	
 	public int clashesLeft() {
 		int result = 0;
