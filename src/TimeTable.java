@@ -1,6 +1,10 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
 
 public class TimeTable extends JFrame implements ActionListener {
 
@@ -35,7 +39,7 @@ public class TimeTable extends JFrame implements ActionListener {
         String capField[] = {"Slots:", "Courses:", "Clash File:", "Iters:", "Shift:"};
         field = new JTextField[capField.length];
 
-        String capButton[] = {"Load", "Start", "Step", "Print", "Exit", "Continue"};
+        String capButton[] = {"Load", "Start", "Step", "Print", "Exit", "Continue", "Log"};
         tool = new JButton[capButton.length];
 
         tools.setLayout(new GridLayout(capField.length + capButton.length, 1));
@@ -146,6 +150,29 @@ public class TimeTable extends JFrame implements ActionListener {
                     System.out.println("Shift field is empty. Please enter a value.");
                 }
                 break;
+            case 6:
+                System.out.println("Started logging");
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter("algorithm_log.txt"))) {
+                    writer.write("Algorithm Log\n");
+                    writer.write("Slots: " + field[0].getText() + "\n");
+                    writer.write("Courses: " + field[1].getText() + "\n");
+                    writer.write("Clash File: " + field[2].getText() + "\n");
+                    writer.write("Iterations: " + field[3].getText() + "\n");
+                    writer.write("Shifts: " + field[4].getText() + "\n");
+
+                    // Log the current state
+                    writer.write("Current Clashes: " + courses.clashesLeft() + "\n");
+                    writer.write("Slots:\n");
+                    for (int i = 1; i < courses.length(); i++) {
+                        writer.write(i + "\t" + courses.slot(i) + "\t" + courses.status(i) + "\n");
+                    }
+                    writer.write("\n");
+
+                    writer.write("Shift = " + field[4].getText() + "\tMin clashes = " + min + "\tat step " + step + "\n");
+                    System.out.println("Shift = " + field[4].getText() + "\tMin clashes = " + min + "\tat step " + step);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
         }
     }
 
