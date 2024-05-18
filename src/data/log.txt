@@ -52,7 +52,13 @@ for example the first clash free exam is now in my case much more green lines ap
 in the second half of the drawing and there are some more courses
 with no clashes in the print.
 
-With shift = 10 using the chain update almost solves the problem with there being only a few
+With shift = 1 and 100 iterations:
+Shift = 1	Min clashes = 1452	at step 1
+
+With shift = 1 and 100 iterations:
+Shift = 1	Min clashes = 478	at step 22
+
+With shift = 10 and 1 iteration using the chain update almost solves the problem with there being only a few
 red lines that still need to be fixed:
 Exam	Slot	Clashes
 1	1	0
