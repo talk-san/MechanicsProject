@@ -1,24 +1,39 @@
 WITHOUT ASSOCIATOR
 
 For FILE: ute-s-92.stu
-Slots: 17
-Courses: 381
+Slots: 10
+Courses: 184
 Iters: 1
 
-When initially loading the set we see that the second half of the graph is entirely green
-indicating that there are no clashes with the second half of the courses,
+When initially loading the set we see that the second there are only a few green lines
+indicating that there are only a few courses that have no clashes
 
-In the first half there are only a few green lines, meaning most of the courses here have clashes,
 using the Print button we can see which ones don't have clashes:
+    Exam	Slot	Clashes
     27	0	0
     46	0	0
+    102 0   0
     105	0	0
     111	0	0
     ...
     133	0	0
 
 Now let's start the algorithm with Shift = 1, this means we're shifting each course to the right,
-after which more green lines appear in the first half, indicating some of the clashes were resolved,
+after which more green lines appear, indicating some of the clashes were resolved, using the print
+function:
+    Exam	Slot	Clashes
+    ...
+    27	0	0
+    28	0	0
+    ...
+    41	0	0
+    ...
+    46	0	0
+    ...
+    124	0	0
+    125	0	0
+    126	0	0
+    ...
 
 In comparison when starting the algorithm with 10 shifts, courses have more space to work with, this
 results in a noticeably change in the graph, with now most lines being green and using the print
@@ -28,10 +43,199 @@ functionality we can find the lines which still haves clashes:
 
 WITH AUTOASSOCIATOR
 
-Running the same configuration with the autoassociator updates (default now) shows that with
+Since the hopfield implementation has some randomness to it the results below might not be
+reproduced but here are my results:
+
+Running the same configuration with the Autoassociator updates (default now) shows that with
 the autoassociator updates with shift = 1 and same config we see much less clashes since
 a lot of the courses have been moved to the second section without clashes
-for example the first clash free exam is now 15	14	0 and there are much less clashes now.
+for example the first clash free exam is now in my case (17	8	0) and there are some more courses
+with no clashes in the print.
 
 With shift = 10 the start method doesn't change much from the version without the associator but
-the problem is solved after 1 shift with there being only 2 clashes after.
+the problem is solved after 10 shift and a few steps, on one instance I got the following solution:
+Exam	Slot	Clashes
+1	0	0
+2	1	0
+3	2	0
+4	0	0
+5	1	0
+6	3	0
+7	2	0
+8	0	0
+9	0	0
+10	0	0
+11	3	0
+12	1	0
+13	1	0
+14	0	0
+15	0	0
+16	0	0
+17	1	0
+18	2	0
+19	3	0
+20	4	0
+21	1	0
+22	0	0
+23	1	0
+24	2	0
+25	2	0
+26	3	0
+27	9	0
+28	9	0
+29	2	0
+30	0	0
+31	0	0
+32	0	0
+33	3	0
+34	0	0
+35	1	0
+36	1	0
+37	2	0
+38	1	0
+39	4	0
+40	4	0
+41	9	0
+42	5	0
+43	1	0
+44	0	0
+45	0	0
+46	9	0
+47	2	0
+48	3	0
+49	4	0
+50	5	0
+51	0	0
+52	1	0
+53	2	0
+54	3	0
+55	4	0
+56	0	0
+57	2	0
+58	2	0
+59	3	0
+60	5	0
+61	6	0
+62	4	0
+63	0	0
+64	0	0
+65	4	0
+66	2	0
+67	2	0
+68	0	0
+69	0	0
+70	1	0
+71	2	0
+72	3	0
+73	4	0
+74	1	0
+75	0	0
+76	0	0
+77	4	0
+78	1	0
+79	2	0
+80	3	0
+81	0	0
+82	0	0
+83	1	0
+84	2	0
+85	9	0
+86	8	0
+87	8	0
+88	0	0
+89	1	0
+90	2	0
+91	3	0
+92	5	0
+93	3	0
+94	6	0
+95	7	0
+96	9	0
+97	9	0
+98	1	0
+99	4	0
+100	0	0
+101	0	0
+102	9	0
+103	4	0
+104	1	0
+105	9	0
+106	5	0
+107	1	0
+108	1	0
+109	6	0
+110	0	0
+111	9	0
+112	2	0
+113	4	0
+114	1	0
+115	3	0
+116	0	0
+117	4	0
+118	0	0
+119	9	0
+120	2	0
+121	3	0
+122	7	0
+123	4	0
+124	9	0
+125	9	0
+126	9	0
+127	4	0
+128	9	0
+129	2	0
+130	3	0
+131	2	0
+132	7	0
+133	9	0
+134	2	0
+135	9	0
+136	5	0
+137	7	0
+138	2	0
+139	3	0
+140	1	0
+141	1	0
+142	3	0
+143	9	0
+144	9	0
+145	3	0
+146	5	0
+147	9	0
+148	6	0
+149	1	0
+150	0	0
+151	7	0
+152	1	0
+153	4	0
+154	5	0
+155	9	0
+156	9	0
+157	3	0
+158	3	0
+159	4	0
+160	9	0
+161	0	0
+162	7	0
+163	6	0
+164	9	0
+165	3	0
+166	9	0
+167	9	0
+168	3	0
+169	4	0
+170	9	0
+171	9	0
+172	2	0
+173	3	0
+174	9	0
+175	4	0
+176	0	0
+177	9	0
+178	2	0
+179	9	0
+180	1	0
+181	0	0
+182	9	0
+183	9	0
+184	9	0
