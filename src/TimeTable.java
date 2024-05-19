@@ -112,7 +112,7 @@ public class TimeTable extends JFrame implements ActionListener {
                             min = clashes;
                             step = iteration;
                         }
-                        applyAutoassociatorUpdates();
+                        //applyAutoassociatorUpdates(); Either this or the other one below
                         int index = (int) (Math.random() * courses.getLength());
                         autoassociator.chainUpdate(courses.getTimeSlot(index), Integer.parseInt(numOfIters));
                     }
@@ -144,6 +144,7 @@ public class TimeTable extends JFrame implements ActionListener {
                             min = clashes;
                             step = iteration;
                         }
+                        // applyAutoassociatorUpdates();
                         int index = (int) (Math.random() * courses.getLength());
                         autoassociator.chainUpdate(courses.getTimeSlot(index), Integer.parseInt(numOfIters));
                     }
