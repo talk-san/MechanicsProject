@@ -133,17 +133,18 @@ public class TimeTable extends JFrame implements ActionListener {
             case 4:
                 System.exit(0);
             case 5: // CONTINUE
-                // Same as start with current step count.
+                // Same as start without resetting everything to initial state
                 if (!numOfShifts.isEmpty()) {
                     for (int iteration = 1; iteration <= Integer.parseInt(numOfIters); iteration++) {
                         courses.iterate(Integer.parseInt(numOfShifts));
-                        applyAutoassociatorUpdates();
                         draw();
                         clashes = courses.clashesLeft();
                         if (clashes < min) {
                             min = clashes;
                             step = iteration;
                         }
+                        int index = (int) (Math.random() * courses.getLength());
+                        autoassociator.chainUpdate(courses.getTimeSlot(index), Integer.parseInt(numOfIters));
                     }
                     System.out.println("Shift = " + numOfShifts + "\tMin clashes = " + min + "\tat step " + step);
                     setVisible(true);

@@ -24,7 +24,6 @@ public class CourseArray {
 				throw new NullPointerException("Resource not found: " + directoryPath + filename);
 			}
 			String filePath = resource.getPath();
-			System.out.println(filePath);
 
 			BufferedReader file = new BufferedReader(new FileReader(filePath));
 			String lineStr = file.readLine();
