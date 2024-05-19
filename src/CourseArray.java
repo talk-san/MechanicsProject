@@ -19,11 +19,22 @@ public class CourseArray {
 			System.out.println("File we're reading: " + filename);
 			String directoryPath = "data/";
 			// Added a relative filepath to make sure this method works within any environment
-			String filePath = Objects.requireNonNull(CourseArray.class.getResource(directoryPath + filename)).getPath();
+			java.net.URL resource = CourseArray.class.getResource(directoryPath + filename);
+			if (resource == null) {
+				throw new NullPointerException("Resource not found: " + directoryPath + filename);
+			}
+			String filePath = resource.getPath();
+			System.out.println(filePath);
+
 			BufferedReader file = new BufferedReader(new FileReader(filePath));
-			StringTokenizer line = new StringTokenizer(file.readLine());
+			String lineStr = file.readLine();
+			if (lineStr == null) {
+				throw new IOException("File is empty: " + filePath);
+			}
+			StringTokenizer line = new StringTokenizer(lineStr);
 			int count = line.countTokens(), i, j, k;
 			int[] index;
+
 			while (count > 0) {
 				if (count > 1) {
 					index = new int[count];
@@ -33,33 +44,33 @@ public class CourseArray {
 						i++;
 					}
 
-					for (i = 0; i < index.length; i++)
-						for (j = 0; j < index.length; j++)
-							if (j != i)
-							{
+					for (i = 0; i < index.length; i++) {
+						for (j = 0; j < index.length; j++) {
+							if (j != i) {
 								k = 0;
-								while (k < elements[index[i]].clashesWith.size() && elements[index[i]].clashesWith.elementAt(k) != elements[index[j]])
+								while (k < elements[index[i]].clashesWith.size() && elements[index[i]].clashesWith.elementAt(k) != elements[index[j]]) {
 									k++;
-								if (k == elements[index[i]].clashesWith.size())
+								}
+								if (k == elements[index[i]].clashesWith.size()) {
 									elements[index[i]].addClash(elements[index[j]]);
+								}
 							}
+						}
+					}
 				}
-				line = new StringTokenizer(file.readLine());
+				lineStr = file.readLine();
+				if (lineStr == null) break; // Check if end of file is reached
+				line = new StringTokenizer(lineStr);
 				count = line.countTokens();
 			}
 			file.close();
-		}
-		catch (NumberFormatException numberFormatException) {
-			System.out.println("Couldn't parse to int");
-		}
-
-		catch (FileNotFoundException fileNotFoundException) {
-			System.out.println("The specified file was not found: " + fileNotFoundException.getMessage());
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
 		}
 
-		catch (Exception e) {
-			System.out.println("Something went wrong reading the file: " + e.getMessage());
-		}
+
 	}
 	
 	public int length() {
