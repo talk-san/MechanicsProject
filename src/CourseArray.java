@@ -73,13 +73,22 @@ public class CourseArray {
 	public int slot(int index) {
 		return elements[index].mySlot;
 	}
-	
+
 	public void setSlot(int index, int newSlot) {
-		elements[index].mySlot = newSlot;
+		if (newSlot >= 0 && newSlot < period) {
+			elements[index].mySlot = newSlot;
+		} else {
+			elements[index].mySlot = Math.max(0, Math.min(newSlot, period - 1));
+		}
 	}
-	
+
+
 	public int maxClashSize(int index) {
 		return elements[index] == null || elements[index].clashesWith.isEmpty() ? 0 : elements[index].clashesWith.size();
+	}
+
+	public int getLength() {
+		return elements.length;
 	}
 	
 	public int clashesLeft() {
@@ -89,7 +98,16 @@ public class CourseArray {
 		
 		return result;
 	}
-	
+
+	public int[] getTimeSlot(int index) {
+		int[] timeSlot = new int[elements.length];
+		for (int i = 1; i < elements.length; i++) {
+			timeSlot[i] = elements[i].mySlot == index ? 1 : -1;
+		}
+		return timeSlot;
+	}
+
+
 	public void iterate(int shifts) {
 		for (int index = 1; index < elements.length; index++) {
 			elements[index].setForce();
