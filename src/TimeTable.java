@@ -39,7 +39,7 @@ public class TimeTable extends JFrame implements ActionListener {
         String capField[] = {"Slots:", "Courses:", "Clash File:", "Iters:", "Shift:"};
         field = new JTextField[capField.length];
 
-        String capButton[] = {"Load", "Start", "Step", "Print", "Exit", "Continue", "Log"};
+        String capButton[] = {"Load", "Start", "Step", "Print", "Exit", "Continue", "Log", "Switch"};
         tool = new JButton[capButton.length];
 
         tools.setLayout(new GridLayout(capField.length + capButton.length, 1));
@@ -112,6 +112,7 @@ public class TimeTable extends JFrame implements ActionListener {
                             min = clashes;
                             step = iteration;
                         }
+                        applyAutoassociatorUpdates();
                         int index = (int) (Math.random() * courses.getLength());
                         autoassociator.chainUpdate(courses.getTimeSlot(index), Integer.parseInt(numOfIters));
                     }
@@ -130,7 +131,7 @@ public class TimeTable extends JFrame implements ActionListener {
                 for (int i = 1; i < courses.length(); i++)
                     System.out.println(i + "\t" + courses.slot(i) + "\t" + courses.status(i));
                 break;
-            case 4:
+            case 4: // EXIT
                 System.exit(0);
             case 5: // CONTINUE
                 // Same as start without resetting everything to initial state
@@ -175,6 +176,20 @@ public class TimeTable extends JFrame implements ActionListener {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            case 7: // SWITCH BETWEEN 2 FILE CONFIGS
+                if (field[2].getText().equals("ute-s-92.stu")) {
+                    field[0].setText("28");
+                    field[1].setText("543");
+                    field[2].setText("car-f-92.stu");
+                    field[3].setText("1");
+                } else {
+                    field[0].setText("10");
+                    field[1].setText("184");
+                    field[2].setText("ute-s-92.stu");
+                    field[3].setText("1");
+                }
+
+
         }
     }
 

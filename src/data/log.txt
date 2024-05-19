@@ -3,7 +3,7 @@ WITHOUT ASSOCIATOR
 For FILE: ute-s-92.stu
 Slots: 10
 Courses: 184
-Iters: 1
+
 
 When initially loading the set we see that the second there are only a few green lines
 indicating that there are only a few courses that have no clashes
@@ -18,7 +18,7 @@ using the Print button we can see which ones don't have clashes:
     ...
     133	0	0
 
-Now let's start the algorithm with Shift = 1, this means we're shifting each course to the right,
+Now let's start the algorithm with Shift = 1, Iters: 1 this means we're shifting each course to the right,
 after which more green lines appear, indicating some of the clashes were resolved, using the print
 function:
     Exam	Slot	Clashes
@@ -245,3 +245,19 @@ Exam	Slot	Clashes
 182	0	0
 183	0	0
 184	0	0
+
+WITHOUT ASSOCIATOR
+
+For FILE: car-f-92.stu
+Slots: 28
+Courses: 543
+
+Shift = 1	Min clashes = 40134	at step 1 (1 Iteration)
+Shift = 1	Min clashes = 26224	at step 100 (100 Iterations)
+Shift = 1	Min clashes = 18230	at step 150 (1000 Iterations)
+
+WITH ASSOCIATOR (random)
+
+Shift = 1	Min clashes = 40134	at step 1 (1 Iteration)
+Shift = 1	Min clashes = 33738	at step 30 (100 Iterations)
+Shift = 1	Min clashes = 32094	at step 113 (1000 Iterations)
